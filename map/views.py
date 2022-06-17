@@ -5,5 +5,5 @@ import os
 def index(request):
     return render(request, 'index.html')
 
-def geojson(request):
+def data(request):
     return render(request, 'data.json')

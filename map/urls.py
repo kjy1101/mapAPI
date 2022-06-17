@@ -3,5 +3,5 @@ from .views import *
 
 urlpatterns = [
     path('', index, name="index"),
-    path('geojson/', geojson, name="geojson"),
+    path('data/', data, name="data"),
 ]
