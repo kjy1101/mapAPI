@@ -59,14 +59,37 @@ function startDataLayer(geojson) {
 
     // show info box while mouseover
     map.data.addListener('mouseover', function(e) {
-        var feature = e.feature,
-        regionName = feature.getProperty('area1');
+        var feature = e.feature
+
+        var info = feature.property_atr_nam + "\n"
+                    + feature.property_atrb_se + "\n"
+                    + feature.property_dgm_ar + "\n"
+                    + feature.property_dgm_lt + "\n"
+                    + feature.property_dgm_nm + "\n"
+                    + feature.property_exc_nam + "\n"
+                    + feature.property_excut_se + "\n"
+                    + feature.property_grad_se + "\n"
+                    + feature.property_lcl_nam + "\n"
+                    + feature.property_lclas_cl + "\n"
+                    + feature.property_mls_nam + "\n"
+                    + feature.property_mlsfc_cl + "\n"
+                    + feature.property_ntfc_sn + "\n"
+                    + feature.property_pmi_nam + "\n"
+                    + feature.property_present_sn + "\n"
+                    + feature.property_road_no + "\n"
+                    + feature.property_road_role + "\n"
+                    + feature.property_road_ty + "\n"
+                    + feature.property_scl_nam + "\n"
+                    + feature.property_sclas_cl + "\n"
+                    + feature.property_sig_nam + "\n"
+                    + feature.property_signgu_se + "\n"
+                    + feature.property_wtnnc_sn + "\n"
 
         tooltip.css({
             display: '',
             left: e.offset.x,
             top: e.offset.y
-        }).text("hi");
+        }).text(info);
 
         map.data.overrideStyle(feature, {
             fillOpacity: 0.6,
