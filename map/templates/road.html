@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>mapAPI</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=p2vhvidl5l"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</head>
+<body>
+<div id="map" style="width:100%;height:700px;"></div>
+
+<script>
+var mapOptions = {
+    center: new naver.maps.LatLng(37.3595704, 127.105399),
+    zoom: 7
+};
+
+var map = new naver.maps.Map('map', mapOptions);
+
+naver.maps.Event.once(map, 'init', function () {
+    $.ajax({
+        url: 'data',
+        dataType: 'json',
+        success: startDataLayer
+    });
+});
+
+var tooltip = $('<div style="position:absolute;z-index:1000;padding:5px 10px;background-color:#fff;border:solid 2px #000;font-size:14px;pointer-events:none;display:none;white-space:pre-line;"></div>');
+
+tooltip.appendTo(map.getPanes().floatPane);
+
+function startDataLayer(geojson) {
+    // geojson info load
+    map.data.addGeoJson(geojson);
+
+    // map data layer style
+    map.data.setStyle(function(feature) {
+        var styleOptions = {
+            fillColor: '#ff0000',
+            fillOpacity: 0.0001,
+            strokeColor: '#ff0000',
+            strokeWeight: 2,
+            strokeOpacity: 0.4
+        };
+
+        // data layer style when focused
+        if (feature.getProperty('focus')) {
+            styleOptions.fillOpacity = 0.6;
+            styleOptions.fillColor = '#0f0';
+            styleOptions.strokeColor = '#0f0';
+            styleOptions.strokeWeight = 4;
+            styleOptions.strokeOpacity = 1;
+        }
+
+        return styleOptions;
+    });
+
+    // show info box while mouseover
+    map.data.addListener('mouseover', function(e) {
+        var feature = e.feature
+
+        var info = "PRESENT_SN : " + feature.property_present_sn + "\n"
+                    + "도형 대분류코드 : " + feature.property_lclas_cl + "\n"
+                    + "도형 중분류코드 : " + feature.property_mlsfc_cl + "\n"
+                    + "도형 소분류코드 : " + feature.property_sclas_cl + "\n"
+                    + "도형 속성코드 : " + feature.property_atrb_se + "\n"
+                    + "조서관리 코드 : " + feature.property_wtnnc_sn + "\n"
+                    + "결정고시관리코드 : " + feature.property_ntfc_sn + "\n"
+                    + "라벨명 : " + feature.property_dgm_nm + "\n"
+                    + "면적(도형) : " + feature.property_dgm_ar + "\n"
+                    + "길이(도형) : " + feature.property_dgm_lt + "\n"
+                    + "지자체관리코드 : " + feature.property_signgu_se + "\n"
+                    + "규모_등급 : " + feature.property_grad_se + "\n"
+                    + "규모_류별 : " + feature.property_road_ty + "\n"
+                    + "규모_번호 : " + feature.property_road_no + "\n"
+                    + "도로기능 : " + feature.property_road_role + "\n"
+                    + "집행상태코드 : " + feature.property_excut_se + "\n"
+                    + "시군구명 : " + feature.property_sig_nam + "\n"
+                    + "도형대분류명 : " + feature.property_lcl_nam + "\n"
+                    + "도형중분류명 : " + feature.property_mls_nam + "\n"
+                    + "도형소분류명 : " + feature.property_scl_nam + "\n"
+                    + "도형속성명 : " + feature.property_atr_nam + "\n"
+                    + "도로기능명 : " + feature.property_pmi_nam + "\n"
+                    + "집행상태명 : " + feature.property_exc_nam + "\n"
+
+        tooltip.css({
+            display: '',
+            left: e.offset.x,
+            top: e.offset.y
+        }).text(info);
+
+        map.data.overrideStyle(feature, {
+            fillOpacity: 0.6,
+            strokeWeight: 4,
+            strokeOpacity: 1
+        });
+    });
+
+    // remove info box while mouseout
+    map.data.addListener('mouseout', function(e) {
+        tooltip.hide().empty();
+        map.data.revertStyle();
+    });
+}
+
+</script>
+</body>
+</html>

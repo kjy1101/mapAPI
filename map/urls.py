@@ -3,6 +3,8 @@ from .views import *
 
 urlpatterns = [
     path('', index, name="index"),
+    path('road', road, name="road"),
+    path('land', land, name="land"),
     path('data/', data, name="data"),
-    path('api/', APItest, name="APItest"),
+    path('road/api/', road_API, name="road_API"),
 ]

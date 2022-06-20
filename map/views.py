@@ -6,10 +6,16 @@ import os, requests, json
 def index(request):
     return render(request, 'index.html')
 
+def road(request):
+    return render(request, 'road.html')
+
+def land(request):
+    return render(request, 'land.html')
+
 def data(request):
     return render(request, 'data.json')
 
-def APItest(request):
+def road_API(request):
     requestData = requests.get('http://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_UPISUQ151&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&attrFilter=emdCd:=:41465102')
     jsonData = None
     if requestData.status_code == 200:
