@@ -21,7 +21,7 @@ var map = new naver.maps.Map('map', mapOptions);
 
 naver.maps.Event.once(map, 'init', function () {
     $.ajax({
-        url: 'data',
+        url: '/data',
         dataType: 'json',
         success: startDataLayer
     });
@@ -61,29 +61,8 @@ function startDataLayer(geojson) {
     map.data.addListener('mouseover', function(e) {
         var feature = e.feature
 
-        var info = feature.property_atr_nam + "\n"
-                    + feature.property_atrb_se + "\n"
-                    + feature.property_dgm_ar + "\n"
-                    + feature.property_dgm_lt + "\n"
-                    + feature.property_dgm_nm + "\n"
-                    + feature.property_exc_nam + "\n"
-                    + feature.property_excut_se + "\n"
-                    + feature.property_grad_se + "\n"
-                    + feature.property_lcl_nam + "\n"
-                    + feature.property_lclas_cl + "\n"
-                    + feature.property_mls_nam + "\n"
-                    + feature.property_mlsfc_cl + "\n"
-                    + feature.property_ntfc_sn + "\n"
-                    + feature.property_pmi_nam + "\n"
-                    + feature.property_present_sn + "\n"
-                    + feature.property_road_no + "\n"
-                    + feature.property_road_role + "\n"
-                    + feature.property_road_ty + "\n"
-                    + feature.property_scl_nam + "\n"
-                    + feature.property_sclas_cl + "\n"
-                    + feature.property_sig_nam + "\n"
-                    + feature.property_signgu_se + "\n"
-                    + feature.property_wtnnc_sn + "\n"
+        var info = feature.property_blocktype + "\n"
+                    + feature.property_zonename + "\n"
 
         tooltip.css({
             display: '',
