@@ -14,8 +14,8 @@ def APItest(request):
     jsonData = None
     if requestData.status_code == 200:
         jsonData = requestData.json()
-        f = open("./map/templates/data.json", 'w')
-        f.write(str(jsonData.get('response').get('result').get('featureCollection')))
+        f = open("./map/templates/data.json", 'w', encoding='utf-8')
+        f.write(str(jsonData.get('response').get('result').get('featureCollection')).replace('\'', '"'))
         f.close()
         print(requestData.status_code, "Request OK")
     return HttpResponse(requestData)
