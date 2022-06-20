@@ -9,8 +9,14 @@ def index(request):
 def data(request):
     return render(request, 'data.json')
 
+
+# 토지정보
 def APItest(request):
-    requestData = requests.get('http://api.vworld.kr/req/data?key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&service=data&version=2.0&request=getfeature&format=json&size=10&page=1&data=LT_C_ADSIDO_INFO&attrfilter=ctprvn_cd:=:41&columns=ctprvn_cd,ctp_kor_nm,ctp_eng_nm,ag_geom&geometry=true&attribute=true')
+    url = 'http://api.vworld.kr/req/data?service=data&request=GetFeature&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&data=LT_C_LHBLPN&attrFilter=emdCd:=:'
+    suzi = 41465101 #~07
+    gihung = 41463101 # ~18
+    chuin = 41461250, 41461253, 41461256, 41461259, 41461340, 41461350, 41461360, 41461101, 41461102, 41461103, 41461104 # ~10
+    requestData = requests.get('http://api.vworld.kr/req/data?service=data&request=GetFeature&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&data=LT_C_LHBLPN&attrFilter=emdCd:<=:41465101')
     jsonData = None
     if requestData.status_code == 200:
         jsonData = requestData.json()
