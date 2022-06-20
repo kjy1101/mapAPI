@@ -27,8 +27,59 @@ naver.maps.Event.once(map, 'init', function () {
     });
 });
 
+var tooltip = $('<div style="position:absolute;z-index:1000;padding:5px 10px;background-color:#fff;border:solid 2px #000;font-size:14px;pointer-events:none;display:none;"></div>');
+
+tooltip.appendTo(map.getPanes().floatPane);
+
 function startDataLayer(geojson) {
+    // geojson info load
     map.data.addGeoJson(geojson);
+
+    // map data layer style
+    map.data.setStyle(function(feature) {
+        var styleOptions = {
+            fillColor: '#ff0000',
+            fillOpacity: 0.0001,
+            strokeColor: '#ff0000',
+            strokeWeight: 2,
+            strokeOpacity: 0.4
+        };
+
+        // data layer style when focused
+        if (feature.getProperty('focus')) {
+            styleOptions.fillOpacity = 0.6;
+            styleOptions.fillColor = '#0f0';
+            styleOptions.strokeColor = '#0f0';
+            styleOptions.strokeWeight = 4;
+            styleOptions.strokeOpacity = 1;
+        }
+
+        return styleOptions;
+    });
+
+    // show info box while mouseover
+    map.data.addListener('mouseover', function(e) {
+        var feature = e.feature,
+        regionName = feature.getProperty('area1');
+
+        tooltip.css({
+            display: '',
+            left: e.offset.x,
+            top: e.offset.y
+        }).text("hi");
+
+        map.data.overrideStyle(feature, {
+            fillOpacity: 0.6,
+            strokeWeight: 4,
+            strokeOpacity: 1
+        });
+    });
+
+    // remove info box while mouseout
+    map.data.addListener('mouseout', function(e) {
+        tooltip.hide().empty();
+        map.data.revertStyle();
+    });
 }
 
 </script>
