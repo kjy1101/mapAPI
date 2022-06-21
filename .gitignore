@@ -308,3 +308,5 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,django,python
 
 map/templates/data.json
+map/templates/landData.json
+map/templates/roadData.json
