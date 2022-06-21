@@ -21,7 +21,7 @@ var map = new naver.maps.Map('map', mapOptions);
 
 naver.maps.Event.once(map, 'init', function () {
     $.ajax({
-        url: 'data',
+        url: '/roadData',
         dataType: 'json',
         success: startDataLayer
     });
