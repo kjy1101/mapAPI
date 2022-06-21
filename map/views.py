@@ -21,16 +21,18 @@ def landData(request):
 def roadData(request):
     return render(request, 'roadData.json')
 
-def road_API(request):
-    url = "http://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_UPISUQ151&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&attrFilter=emdCd:=:"
+
+def API(request):
     yongin_emdcd = YongIn_regionName()
-    featureCollection = {"type": "FeatureCollection", "bbox": [127.00212289179542, 37.09498614424044, 127.45205299927372, 37.38706567868086], "features": []}
+    featureCollection = {"type": "FeatureCollection",
+                         "bbox": [127.00212289179542, 37.09498614424044, 127.45205299927372, 37.38706567868086],
+                         "features": []}
 
     for emdcd in yongin_emdcd:
         url = "http://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_UPISUQ151&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&attrFilter=emdCd:=:"
         requestData = requests.get(url + emdcd)
         jsonData = None
-        
+
         if requestData.status_code == 200:
             jsonData = requestData.json()
             # print(requestData.status_code, "Request OK")
@@ -53,6 +55,28 @@ def road_API(request):
             pass
 
     f = open("./map/templates/data.json", 'w', encoding='utf-8')
+    f.write(str(featureCollection).replace('\'', '"'))
+    f.close()
+
+    return redirect('index')
+
+def road_API(request):
+    url = "http://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_UPISUQ151&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&attrFilter=emdCd:=:"
+    yongin_emdcd = YongIn_regionName()
+    featureCollection = {"type": "FeatureCollection", "bbox": [127.00212289179542, 37.09498614424044, 127.45205299927372, 37.38706567868086], "features": []}
+
+    for emdcd in yongin_emdcd:
+        requestData = requests.get(url + emdcd)
+        jsonData = None
+        
+        if requestData.status_code == 200:
+            jsonData = requestData.json()
+            # print(requestData.status_code, "Request OK")
+            features = jsonData.get('response').get('result').get('featureCollection').get("features")
+            for f in features:
+                featureCollection.get("features").append(f)
+
+    f = open("./map/templates/roadData.json", 'w', encoding='utf-8')
     f.write(str(featureCollection).replace('\'', '"'))
     f.close()
 
