@@ -12,6 +12,9 @@ def road(request):
 def land(request):
     return render(request, 'land.html')
 
+def data(request):
+    return render(request, 'data.json')
+
 def landData(request):
     return render(request, 'landData.json')
 
@@ -24,6 +27,7 @@ def road_API(request):
     featureCollection = {"type": "FeatureCollection", "bbox": [127.00212289179542, 37.09498614424044, 127.45205299927372, 37.38706567868086], "features": []}
 
     for emdcd in yongin_emdcd:
+        url = "http://api.vworld.kr/req/data?service=data&request=GetFeature&data=LT_C_UPISUQ151&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&attrFilter=emdCd:=:"
         requestData = requests.get(url + emdcd)
         jsonData = None
         
@@ -34,7 +38,21 @@ def road_API(request):
             for f in features:
                 featureCollection.get("features").append(f)
 
-    f = open("./map/templates/roadData.json", 'w', encoding='utf-8')
+    for i in yongin_emdcd:
+        url = 'http://api.vworld.kr/req/data?service=data&request=GetFeature&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&data=LT_C_LHBLPN&attrFilter=emdCd:=:'
+        url += str(i)
+        try:
+            requestData = requests.get(url)
+            jsonData = None
+            if requestData.status_code == 200:
+                jsonData = requestData.json()
+                features = jsonData.get('response').get('result').get('featureCollection').get("features")
+                for f in features:
+                    featureCollection.get("features").append(f)
+        except:
+            pass
+
+    f = open("./map/templates/data.json", 'w', encoding='utf-8')
     f.write(str(featureCollection).replace('\'', '"'))
     f.close()
 
@@ -69,10 +87,6 @@ def YongIn_regionName():
 
 
 def land_API(request):
-    # url = 'http://api.vworld.kr/req/data?service=data&request=GetFeature&key=5CC27E65-1081-3E65-A3F8-1EDD66DE7ECF&domain=http:127.0.0.1:8000&data=LT_C_LHBLPN&attrFilter=emdCd:=:'
-    # suzi = 41465101  # ~07
-    # gihung = 41463101  # ~18
-    # chuin = 41461250, 41461253, 41461256, 41461259, 41461340, 41461350, 41461360, 41461101, 41461102, 41461103, 41461104  # ~10
     featureCollection = {"type": "FeatureCollection",
                          "bbox": [127.00212289179542, 37.09498614424044, 127.45205299927372, 37.38706567868086],
                          "features": []}
