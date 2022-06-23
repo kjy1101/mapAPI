@@ -9,32 +9,80 @@
 
 </head>
 <body>
-    <div id="vmap" style="width:100%;height:97vh;"></div>
+ <div id="vmap" style="width:100%;height:350px;left:0px;top:0px"></div>
+<input type="button" onclick="makeGeometry()" value="PolygonZ">
+<input type="button" onclick="mapReset()" value="전체삭제">
+ <script type="text/javascript">
 
-    <script type="text/javascript">
+ var mapOptions = new vw.MapOptions(
+vw.BasemapType.GRAPHIC,
+"",
+vw.DensityType.FULL,
+vw.DensityType.BASIC,
+  false,
+  new vw.CameraPosition(
+     new vw.CoordZ(127.425, 38.196, 13487000),
+     new vw.Direction(-90, 0, 0)
+  ),
+  new vw.CameraPosition(
+     new vw.CoordZ(126.921883, 37.524370, 554870),
+     new vw.Direction(0, -90, 0)
+ )
+);
 
-        vwmap()
-        
-        function vwmap(){
-        
-            var mapOptions = new vw.MapOptions(
-                vw.BasemapType.GRAPHIC,
-                "",
-                eval("vw.DensityType.BASIC"),
-                eval("vw.DensityType.BASIC"),
-                    false,
-                    new vw.CameraPosition(
-                    new vw.CoordZ(127.425, 38.196, 13487000),
-                    new vw.Direction(-90, 0, 0)
-                    ),
-                    new vw.CameraPosition(
-                    new vw.CoordZ(127.425, 38.196, 1548700),
-                    new vw.Direction(0, -90, 0)
-                )
-                );
-                
-            var map3d = new vw.Map( "vmap" , mapOptions );  
-        }
+map = new vw.Map("vmap", mapOptions);
+
+
+function makeGeometry(){
+
+    var point1Coord = new vw.Coord(126.824883, 37.524370);
+    var point2Coord = new vw.Coord(126.854883, 37.511370);
+    var point3Coord = new vw.Coord(126.884883, 37.511370);
+
+    var ar = new Array();
+    ar.push(point1Coord);
+    ar.push(point2Coord);
+    ar.push(point3Coord);
+
+    var coordCol =  new vw.Collection(ar);
+    var polygonZ = new vw.geom.PolygonZ(coordCol );
+    polygonZ.setId("polygonZ1");
+    polygonZ.setFillColor( new vw.Color(122,255,255,180) );
+    polygonZ.setOutLineColor(vw.Color.GOLD);
+    polygonZ.setDistanceFromTerrain(10);
+    polygonZ.setExtrudeHeight(100);
+    polygonZ.create();
+}
+
+  function mapReset(){
+     map.clear();
+  }
+{#    <div id="vmap" style="width:100%;height:97vh;"></div>#}
+{##}
+{#    <script type="text/javascript">#}
+{##}
+{#        vwmap()#}
+{#        #}
+{#        function vwmap(){#}
+{#        #}
+{#            var mapOptions = new vw.MapOptions(#}
+{#                vw.BasemapType.GRAPHIC,#}
+{#                "",#}
+{#                eval("vw.DensityType.BASIC"),#}
+{#                eval("vw.DensityType.BASIC"),#}
+{#                    false,#}
+{#                    new vw.CameraPosition(#}
+{#                    new vw.CoordZ(127.425, 38.196, 13487000),#}
+{#                    new vw.Direction(-90, 0, 0)#}
+{#                    ),#}
+{#                    new vw.CameraPosition(#}
+{#                    new vw.CoordZ(127.425, 38.196, 1548700),#}
+{#                    new vw.Direction(0, -90, 0)#}
+{#                )#}
+{#                );#}
+{#                #}
+{#            var map3d = new vw.Map( "vmap" , mapOptions );  #}
+{#        }#}
     </script>
 </body>
 </html>
