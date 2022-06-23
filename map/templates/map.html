@@ -4,12 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>Title</title>
+    <title>3D Map</title>
     <script type="text/javascript" src="http://map.vworld.kr/js/webglMapInit.js.do?version=2.0&apiKey=5A0D575E-CF44-33D2-9478-0C0FB4BA2EC2&domain=http:127.0.0.1:8000"></script>
 
 </head>
 <body>
+    <div id="vmap" style="width:100%;height:97vh;"></div>
 
+    <script type="text/javascript">
+
+        vwmap()
+        
+        function vwmap(){
+        
+            var mapOptions = new vw.MapOptions(
+                vw.BasemapType.GRAPHIC,
+                "",
+                eval("vw.DensityType.BASIC"),
+                eval("vw.DensityType.BASIC"),
+                    false,
+                    new vw.CameraPosition(
+                    new vw.CoordZ(127.425, 38.196, 13487000),
+                    new vw.Direction(-90, 0, 0)
+                    ),
+                    new vw.CameraPosition(
+                    new vw.CoordZ(127.425, 38.196, 1548700),
+                    new vw.Direction(0, -90, 0)
+                )
+                );
+                
+            var map3d = new vw.Map( "vmap" , mapOptions );  
+        }
+    </script>
 </body>
 </html>
 
