@@ -21,6 +21,9 @@ def landData(request):
 def roadData(request):
     return render(request, 'roadData.json')
 
+def map(request):
+    return render(request, 'map.html')
+
 
 def API(request):
     yongin_emdcd = YongIn_regionName()
